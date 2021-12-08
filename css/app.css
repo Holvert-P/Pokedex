@@ -100,27 +100,49 @@ img {
   height: auto;
 }
 .title {
+  position: fixed;
+  top: 0;
   text-align: center;
   margin: auto;
   font-size: 2rem;
   background-color: var(--fire-color);
   color: #fff;
   letter-spacing: 0.2rem;
+  width: 100vw;
 }
 .cards .loader {
-  width: 100%;
+  width: 3rem;
   object-fit: contain;
-  display: none;
-  height: 80vh;
+}
+
+.cards .loading {
+  display: flex;
+  background-color: var(--fairy-color);
+  justify-content: center;
+  gap: 1rem;
+  padding: 0.5rem;
+  opacity: 0;
+  margin: auto;
+  align-items: center;
+  height: 100vh;
+  /* position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 100; */
+  transition: opacity 0.5s ease-in-out;
 }
 .cards {
   background-image: url(../img/pokeball.svg);
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
+  overflow-y: scroll;
   height: 100vh;
+  justify-content: center;
+  align-items: center;
+  padding-top: 3rem;
 }
-.cards > div {
+.cards > .container__cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
   text-align: center;

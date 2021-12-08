@@ -6,8 +6,8 @@ let urlPoke = "https://pokeapi.co/api/v2/pokemon/";
 
 const loadPokemos = async (url) => {
   createLoader();
-
-  document.querySelector(".loader").style.display = "block";
+  document.querySelector(".loading").style.display = "flex";
+  document.querySelector(".loading").style.opacity = 1;
   try {
     let res = await fetch(url),
       json = await res.json(),
@@ -38,6 +38,7 @@ const loadPokemos = async (url) => {
     }
     createNav();
     const $div = document.createElement("div");
+    $div.classList.add("container__cards");
     $div.appendChild($fragment);
     $main.appendChild($div);
     const $link1 = document.createElement("a"),
@@ -62,7 +63,8 @@ const loadPokemos = async (url) => {
     p.textContent = message;
     $main.appendChild(p);
   } finally {
-    document.querySelector(".loader").style.display = "none";
+    document.querySelector(".loading").style.opacity = 0;
+    document.querySelector(".loading").style.display = "none";
   }
 };
 const createFigure = (pokemon, $template) => {
@@ -102,8 +104,14 @@ const createNav = () => {
 };
 
 const createLoader = () => {
-  const $loader = document.createElement("img");
+  const $loader = document.createElement("img"),
+    $divLoader = document.createElement("div"),
+    $spanText = document.createElement("span");
+  $spanText.textContent = "Cargando...";
   $loader.setAttribute("src", "./img/loader.svg");
   $loader.classList.add("loader");
-  $main.appendChild($loader);
+  $divLoader.appendChild($loader);
+  $divLoader.appendChild($spanText);
+  $divLoader.classList.add("loading");
+  $main.appendChild($divLoader);
 };
