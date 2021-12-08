@@ -113,7 +113,7 @@ img {
   display: none;
   height: 80vh;
 }
-.cards {
+.cards > div {
   background-image: url(../img/pokeball.svg);
   background-size: cover;
   background-repeat: no-repeat;
