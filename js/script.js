@@ -118,7 +118,6 @@ const createLoader = () => {
 
 const $modal = document.getElementById("modal"),
   $btn__close = document.querySelector(".modal__close");
-
 $btn__close.addEventListener("click", () => {
   $modal.classList.remove("modal__show");
 });
@@ -128,6 +127,7 @@ const handledBtnMore = () => {
   $btn__more.forEach((btn) => {
     btn.addEventListener("click", () => {
       createData(btn.parentNode.id);
+      $modal.querySelector("#inputs-1").setAttribute("checked", "checked");
     });
   });
 };
