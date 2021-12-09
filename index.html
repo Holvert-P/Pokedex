@@ -9,14 +9,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./css/app.css">
-  <title>Document</title>
+  <link rel="shortcut icon" href="./img/pokeball.png" type="image/x-icon">
+  <title>Pokedex || Pokemon</title>
 </head>
 
 <body>
   <header>
     <h1 class="title">Pokémons</h1>
   </header>
-  <main class="cards">
+  <main class="cards" id="cards">
   </main>
 
   <template id="template__cards">
@@ -28,11 +29,45 @@
         <span class="type1"></span>
       </div>
       <img src="" alt="">
+      <span class="btn__more">more</span>
     </figure>
-
   </template>
 
-  <script src="./js/script.js"></script>
+  <section id="modal">
+    <div class="modal__container">
+      <h2 class="modal__title">Pokemon</h2>
+      <article class="container__left">
+        <figure class="modal__picture">
+          <figcaption></figcaption>
+          <div class="spanTypes">
+            <span class="type0"></span>
+            <span class="type1"></span>
+          </div>
+          <img class="modal__img">
+        </figure>
+      </article>
+      <article class="container__rigth">
+        <input type="radio" id="inputs-1" name="inputs__slide" class="slider__inputs" checked="">
+        <input type="radio" id="inputs-2" name="inputs__slide" class="slider__inputs">
+        <input type="radio" id="inputs-3" name="inputs__slide" class="slider__inputs">
+        <input type="radio" id="inputs-4" name="inputs__slide" class="slider__inputs">
+
+        <label id="label1" for="inputs-1" class="modal__navItem" href="#about">about</label>
+        <label id="label2" for="inputs-2" class="modal__navItem" href="#">Base stats</label>
+        <label id="label3" for="inputs-3" class="modal__navItem" href="#">Evolutions</label>
+        <label id="label4" for="inputs-4" class="modal__navItem" href="#">Moves</label>
+
+        <div class="container">
+          <section id="about"></section>
+          <section id="baseStats"></section>
+          <section id="evolutions"></section>
+          <section id="moves"></section>
+        </div>
+        <span class="modal__close">Close</span>
+      </article>
+
+
+      <script src="./js/script.js"></script>
 </body>
 
 </html>

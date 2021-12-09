@@ -1,16 +1,16 @@
 :root {
   --steel-color: #a8a8c0;
-  --water-color: #3899f8;
+  --water-color: #76befe;
   --bug-color: #a8b820;
   --dragon-color: #7860e0;
-  --electric-color: #f8d030;
+  --electric-color: #ffd76f;
   --ghost-color: #6060b0;
-  --fire-color: #f05030;
+  --fire-color: #fc6c6d;
   --fairy-color: #e79fe7;
   --ice-color: #58c8e0;
   --fighting-color: #a05038;
   --normal-color: #a8a090;
-  --grass-color: #78c850;
+  --grass-color: #49d0b0;
   --psychic-color: #f870a0;
   --rock-color: #b8a058;
   --dark-color: #262626;
@@ -84,12 +84,12 @@ html {
 }
 nav {
   text-align: center;
-  padding: 1rem;
+  background-color: var(--fire-color);
 }
-a {
+a,
+.btn__more {
   text-decoration: none;
   color: inherit;
-  background-color: var(--fire-color);
   padding: 0 1rem;
   border-radius: 1rem;
   margin: 0 0.25rem;
@@ -124,11 +124,11 @@ img {
   opacity: 0;
   margin: auto;
   align-items: center;
-  height: 100vh;
-  /* position: absolute;
-  top: 50%;
-  left: 50%;
-  z-index: 100; */
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   transition: opacity 0.5s ease-in-out;
 }
 .cards {
@@ -153,8 +153,8 @@ img {
 .card {
   display: flex;
   border-radius: 1rem;
-  height: 10rem;
   justify-content: space-around;
+  flex-wrap: wrap;
   padding: 1rem;
 }
 figcaption {
@@ -173,4 +173,166 @@ figcaption {
 .card img {
   width: 50%;
   object-fit: contain;
+}
+.btn__more {
+  margin-top: 1rem;
+  background-color: #ba9fcc85;
+  cursor: pointer;
+}
+
+/* -----Modal------- */
+#modal {
+  text-align: center;
+}
+.modal__show {
+  position: fixed;
+  background-color: #333;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  display: none;
+  padding: 2rem 0;
+  transition: opacity 0.3s;
+}
+
+.modal__show {
+  opacity: 1;
+  display: flex;
+  overflow-y: scroll;
+}
+.modal__show .modal__container {
+  animation: show 0.5s 0.3s backwards;
+}
+@keyframes show {
+  0% {
+    transform: translateY(-100vh);
+  }
+}
+.modal__title {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+.modal__container {
+  margin: auto;
+  width: 90%;
+  max-width: 37.5rem;
+  overflow: hidden;
+  text-align: center;
+  padding-top: 0.25rem;
+
+  border-radius: 1em;
+}
+.modal__picture {
+  width: 50%;
+  margin: 0 auto;
+  max-width: 25rem;
+  margin-bottom: 2em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.spanTypes {
+  display: flex;
+  gap: 0.3rem;
+}
+.modal__img {
+  width: 100%;
+  display: block;
+  position: relative;
+  bottom: -4rem;
+}
+.modal__nav {
+  display: flex;
+  font-size: 0.85em;
+  gap: 0.25em;
+  justify-content: center;
+  background-color: inherit;
+  color: #333;
+  font-weight: bold;
+  padding: 0.25rem 0;
+}
+.slider__inputs {
+  display: none;
+}
+.modal__navItem {
+  color: #333;
+  padding: 0;
+  opacity: 0.5;
+  border-radius: 0;
+  border-bottom: 1px solid transparent;
+}
+#inputs-1:checked ~ #label1,
+#inputs-2:checked ~ #label2,
+#inputs-3:checked ~ #label3,
+#inputs-4:checked ~ #label4 {
+  opacity: 1;
+  border-color: #333;
+}
+#inputs-1:checked ~ .container {
+  transform: translateX(0);
+}
+#inputs-2:checked ~ .container {
+  transform: translateX(-25%);
+}
+#inputs-3:checked ~ .container {
+  transform: translateX(-50%);
+}
+#inputs-4:checked ~ .container {
+  transform: translateX(-75%);
+}
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 400%;
+  transition: transform 0.5s ease-in-out;
+  padding: 1rem;
+}
+.modal__close {
+  display: inline-block;
+  border: 1px solid;
+  padding: 0 2em;
+  margin-top: 1em;
+  color: #333;
+  border-radius: 0.4em;
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+}
+
+.container__rigth {
+  background-color: #fff;
+  border-radius: 1rem 1rem 0 0;
+  padding-top: 3rem;
+}
+#about {
+  font-size: 0.85em;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+#baseStats {
+  font-size: 0.85em;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+#about,
+#baseStats,
+#evolutions,
+#moves {
+  width: 100%;
+  color: #333;
+  text-align: left;
+  text-transform: capitalize;
+}
+
+#about p {
+  text-align: left;
+  margin: 0.6em 0;
+}
+
+#about > p > span {
+  margin-left: 2rem;
 }
