@@ -207,7 +207,6 @@ const removeChild = (contenedor) => {
   for (let i = 0; i < $item__about.length; i++) {
     $modal.querySelector(`${contenedor}`).removeChild($item__about[i]);
   }
-  console.log($modal.querySelector("#about").childNodes.length);
 };
 
 const createBaseStats = async (json) => {
@@ -221,13 +220,19 @@ const createBaseStats = async (json) => {
       "Total",
     ],
     $baseStats = $modal.querySelector("#baseStats");
-  console.log($baseStats);
+
+  const $div = document.createElement("div");
   json.forEach((bs, index) => {
+    let $width = bs.base_stat - 100;
     const $pValue = document.createElement("p"),
-      $pDesc = document.createElement("p");
+      $pDesc = document.createElement("p"),
+      $pBar = document.createElement("p");
+    $pBar.classList.add("bar");
+    $pBar.style.setProperty("--width-bar", `${$width}%`);
     $pDesc.textContent = stats[index];
     $baseStats.appendChild($pDesc);
     $pValue.textContent = bs.base_stat;
     $baseStats.appendChild($pValue);
+    $baseStats.appendChild($pBar);
   });
 };
