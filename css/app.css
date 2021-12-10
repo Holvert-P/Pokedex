@@ -180,11 +180,12 @@ figcaption {
   max-height: 6rem;
 }
 .btn__more {
-  width:2rem;
+  width:6rem;
   margin-top: 1rem;
   background-color: #ba9fcc85;
   cursor: pointer;
   grid-column: span 2;
+  text-align:center;
 }
 
 /* -----Modal------- */
