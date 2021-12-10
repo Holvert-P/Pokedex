@@ -349,19 +349,20 @@ figcaption {
 .bar {
   overflow: hidden;
   --width-bar: -100%;
+  --bg-color: var(--fire-color);
 }
 .bar,
-.bar::after {
+.bar::before {
   position: relative;
-  width: 11rem;
-  height: 0.1rem;
+  width: 9rem;
+  height: 0.5rem;
   background-color: #88888830;
-  border-radius: 0.2rem;
+  border-radius: 0.25rem;
 }
-.bar::after {
+.bar::before {
   content: "";
   position: absolute;
-  background-color: var(--fire-color);
+  background-color: var(--bg-color);
   transition: transform 1s linear;
   transform: translateX(var(--width-bar));
 }
@@ -371,4 +372,11 @@ figcaption {
 
 #about > p > span {
   margin-left: 2rem;
+}
+
+@media (min-width: 768px) {
+  .bar,
+  .bar::before {
+    width: 11rem;
+  }
 }

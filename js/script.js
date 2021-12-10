@@ -167,17 +167,13 @@ const createData = async ($pokemon) => {
       .appendChild(createItemAbout(json, "weight", "kg"));
 
     // abilities
-    let $abilities = document.createElement("p"),
-      $abilitiesContainer = document.createElement("p"),
-      abilitiesArr = [];
+    let abilitiesArr = [];
     json.abilities.forEach((ab) => {
       abilitiesArr.push(ab.ability.name);
     });
-    $abilities.textContent = abilitiesArr.join(", ");
-    $abilitiesContainer.textContent = "Abilities:";
 
-    $modal.querySelector("#about").appendChild($abilitiesContainer);
-    $modal.querySelector("#about").appendChild($abilities);
+    $modal.querySelector("#about").appendChild(printP("Abilities:"));
+    $modal.querySelector("#about").appendChild(printP(abilitiesArr.join(", ")));
 
     // create BaseStats
     createBaseStats(json.stats);
@@ -191,14 +187,9 @@ const createData = async ($pokemon) => {
 };
 
 const createItemAbout = (json, type, unit) => {
-  const $pHeight = document.createElement("p"),
-    $pValue = document.createElement("p"),
-    $fragmentAbout = document.createDocumentFragment();
-
-  $pValue.textContent = json[`${type}`] + " " + unit;
-  $pHeight.textContent = `${type}:`;
-  $fragmentAbout.appendChild($pHeight);
-  $fragmentAbout.appendChild($pValue);
+  $fragmentAbout = document.createDocumentFragment();
+  $fragmentAbout.appendChild(printP(`${type}:`));
+  $fragmentAbout.appendChild(printP(json[`${type}`] + " " + unit));
   return $fragmentAbout;
 };
 
@@ -219,20 +210,38 @@ const createBaseStats = async (json) => {
       "Speed",
       "Total",
     ],
+    $colors = [
+      "--ghost-color",
+      "--fire-color",
+      "--electric-color",
+      "--water-color",
+      "  --grass-color",
+      "--psychic-color",
+      " --dark-color",
+    ],
     $baseStats = $modal.querySelector("#baseStats");
 
-  const $div = document.createElement("div");
+  let total = 0;
   json.forEach((bs, index) => {
-    let $width = bs.base_stat - 100;
-    const $pValue = document.createElement("p"),
-      $pDesc = document.createElement("p"),
-      $pBar = document.createElement("p");
-    $pBar.classList.add("bar");
-    $pBar.style.setProperty("--width-bar", `${$width}%`);
-    $pDesc.textContent = stats[index];
-    $baseStats.appendChild($pDesc);
-    $pValue.textContent = bs.base_stat;
-    $baseStats.appendChild($pValue);
-    $baseStats.appendChild($pBar);
+    $baseStats.appendChild(printP(stats[index]));
+    $baseStats.appendChild(printP(bs.base_stat));
+    $baseStats.appendChild(printBar(index, bs.base_stat - 100, $colors[index]));
+    total += bs.base_stat;
   });
+  $baseStats.appendChild(printP(stats[6]));
+  $baseStats.appendChild(printP(total));
+  $baseStats.appendChild(printBar(6, 0, $colors[6]));
+};
+
+const printP = (value) => {
+  const $pValue = document.createElement("p");
+  $pValue.textContent = value;
+  return $pValue;
+};
+const printBar = (index, $width, $colors) => {
+  const $pBar = document.createElement("p");
+  $pBar.classList.add("bar");
+  $pBar.style.setProperty("--width-bar", `${$width}%`);
+  $pBar.style.setProperty("--bg-color", `var(${$colors})`);
+  return $pBar;
 };
