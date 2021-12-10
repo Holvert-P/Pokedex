@@ -5,13 +5,14 @@ let urlPoke = "https://pokeapi.co/api/v2/pokemon/";
 const pokeData = [];
 const loadPokemos = async (url) => {
   createLoader();
-  document.querySelector(".loading").style.display = "flex";
-  document.querySelector(".loading").style.opacity = 1;
+  // document.querySelector(".loading").style.display = "flex";
+  // document.querySelector(".loading").style.opacity = 1;
   try {
+    const $div = printElement("", "div", ["class"], ["container__cards"]);
     let res = await fetch(url),
       json = await res.json(),
       $template = "";
-
+    createNav();
     if (!res.ok) throw { status: res.status, statusText: res.statusText };
     for (let i = 0; i < json.results.length; i++) {
       try {
@@ -24,15 +25,14 @@ const loadPokemos = async (url) => {
         let $clone = document.importNode($template, true);
 
         $fragment.appendChild($clone);
+        $div.appendChild($fragment);
+        $main.appendChild($div);
       } catch (err) {
         console.log(err);
         let message = err.statusText || "Ocurrio un error";
       }
     }
-    createNav();
-    const $div = printElement("", "div", ["class"], ["container__cards"]);
-    $div.appendChild($fragment);
-    $main.appendChild($div);
+
     createNav();
     handledBtnMore();
     const $links = document.querySelectorAll(".links");
