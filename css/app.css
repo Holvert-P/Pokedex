@@ -103,7 +103,7 @@ img {
   position: fixed;
   top: 0;
   text-align: center;
-  margin: auto;
+  margin: 0 auto;
   font-size: 2rem;
   background-color: var(--fire-color);
   color: #fff;
@@ -180,12 +180,13 @@ figcaption {
   max-height: 6rem;
 }
 .btn__more {
-  width:6rem;
-  margin-top: 1rem;
+  /* width: 6rem; */
+  /* margin-top: 1rem; */
   background-color: #ba9fcc85;
   cursor: pointer;
   grid-column: span 2;
-  text-align:center;
+  align-self: center;
+  margin: 0 4rem;
 }
 
 /* -----Modal------- */
