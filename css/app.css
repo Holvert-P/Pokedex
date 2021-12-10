@@ -85,6 +85,7 @@ html {
 nav {
   text-align: center;
   background-color: var(--fire-color);
+  width: 100%;
 }
 a,
 .btn__more {
@@ -109,6 +110,7 @@ img {
   color: #fff;
   letter-spacing: 0.2rem;
   width: 100vw;
+  height: 3.1rem;
 }
 .cards .loader {
   width: 3rem;
