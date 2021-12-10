@@ -180,6 +180,7 @@ figcaption {
   max-height: 6rem;
 }
 .btn__more {
+  width:2rem;
   margin-top: 1rem;
   background-color: #ba9fcc85;
   cursor: pointer;
