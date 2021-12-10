@@ -289,9 +289,10 @@ figcaption {
   transform: translateX(-75%);
 }
 .container {
-  display: flex;
+  display: grid;
   justify-content: center;
   align-items: flex-start;
+  grid-template-columns: repeat(4, 1fr);
   text-align: center;
   width: 400%;
   transition: transform 0.5s ease-in-out;
@@ -324,21 +325,19 @@ figcaption {
   text-transform: capitalize;
   font-size: 0.65rem;
   gap: 0.4rem;
-  padding-left: 1.5rem;
+  padding: 1rem;
+  display: grid;
 }
 #about {
   font-size: 0.85em;
-  display: grid;
   grid-template-columns: repeat(2, min-content);
   white-space: nowrap;
   justify-content: left;
 }
 #baseStats {
   font-size: 0.85em;
-  display: grid;
   grid-template-columns: repeat(3, min-content);
   white-space: nowrap;
-
   align-items: center;
 }
 .bs__Container {
@@ -373,7 +372,30 @@ figcaption {
 #about > p > span {
   margin-left: 2rem;
 }
+#evolutions {
+  font-size: 0.85em;
+  grid-template-columns: 1fr min-content 1fr;
+  grid-template-rows: repeat(2, min-content);
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  white-space: nowrap;
+  gap: 1rem;
+}
 
+#evolutions figure img {
+  object-fit: contain;
+  height: 9rem;
+}
+#evolutions figure {
+  height: 100%;
+}
+#evolutions > .arrow {
+  height: 2rem;
+}
+#evolutions > .arrow > img {
+  height: 100%;
+}
 @media (min-width: 768px) {
   .bar,
   .bar::before {

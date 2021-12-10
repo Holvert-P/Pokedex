@@ -10,8 +10,6 @@ const loadPokemos = async (url) => {
   try {
     let res = await fetch(url),
       json = await res.json(),
-      $previus,
-      $next,
       $template = "";
 
     if (!res.ok) throw { status: res.status, statusText: res.statusText };
@@ -32,8 +30,7 @@ const loadPokemos = async (url) => {
       }
     }
     createNav();
-    const $div = document.createElement("div");
-    $div.classList.add("container__cards");
+    const $div = printElement("", "div", ["class"], ["container__cards"]);
     $div.appendChild($fragment);
     $main.appendChild($div);
     createNav();
@@ -41,7 +38,7 @@ const loadPokemos = async (url) => {
     const $links = document.querySelectorAll(".links");
 
     $links.forEach((link) => {
-      const $link1 = document.createElement("a");
+      const $link1 = printElement("", "a");
       json.previous
         ? ($link1.setAttribute("href", json.previous),
           ($link1.textContent = "< Anterior"))
@@ -50,7 +47,7 @@ const loadPokemos = async (url) => {
     });
 
     $links.forEach((link) => {
-      const $link2 = document.createElement("a");
+      const $link2 = printElement("", "a");
       $next = json.next
         ? ($link2.setAttribute("href", json.next),
           ($link2.textContent = "Siguitente >"))
@@ -60,8 +57,7 @@ const loadPokemos = async (url) => {
   } catch (err) {
     console.log(err);
     let message = err.statusText || "Ocurrio un error";
-    const p = document.createElement("p");
-    p.textContent = message;
+    const p = printElement(message, "p");
     $main.appendChild(p);
   } finally {
     document.querySelector(".loading").style.opacity = 0;
@@ -98,21 +94,20 @@ document.addEventListener("click", (e) => {
 });
 
 const createNav = () => {
-  const $nav = document.createElement("nav");
-  $nav.classList.add("links");
+  const $nav = printElement("", "nav", ["class"], ["links"]);
   $main.appendChild($nav);
 };
 
 const createLoader = () => {
-  const $loader = document.createElement("img"),
-    $divLoader = document.createElement("div"),
-    $spanText = document.createElement("span");
-  $spanText.textContent = "Cargando...";
-  $loader.setAttribute("src", "./img/loader.svg");
-  $loader.classList.add("loader");
+  const $loader = printElement(
+      "",
+      "img",
+      ["class", "src"],
+      ["loader", "./img/loader.svg"]
+    ),
+    $divLoader = printElement("", "div", ["class"], ["loading"]);
   $divLoader.appendChild($loader);
-  $divLoader.appendChild($spanText);
-  $divLoader.classList.add("loading");
+  $divLoader.appendChild(printElement("Cargando...", "span"));
   $main.appendChild($divLoader);
 };
 
@@ -136,8 +131,10 @@ const createData = async ($pokemon) => {
   document.querySelector(".loading").style.display = "flex";
   document.querySelector(".loading").style.opacity = 1;
   try {
-    removeChild("#about");
-    removeChild("#baseStats");
+    removeChild("#about", "p");
+    removeChild("#baseStats", "p");
+    removeChild("#evolutions", "figure");
+
     let res = await fetch(urlPoke + $pokemon),
       json = await res.json();
 
@@ -172,11 +169,18 @@ const createData = async ($pokemon) => {
       abilitiesArr.push(ab.ability.name);
     });
 
-    $modal.querySelector("#about").appendChild(printP("Abilities:"));
-    $modal.querySelector("#about").appendChild(printP(abilitiesArr.join(", ")));
+    $modal.querySelector("#about").appendChild(printElement("Abilities:", "p"));
+    $modal
+      .querySelector("#about")
+      .appendChild(printElement(abilitiesArr.join(", "), "p"));
 
     // create BaseStats
     createBaseStats(json.stats);
+    createEvolutios(
+      json.species.url,
+      json.sprites.other.dream_world.front_default,
+      json.name
+    );
   } catch (err) {
     console.log(err);
   } finally {
@@ -188,13 +192,13 @@ const createData = async ($pokemon) => {
 
 const createItemAbout = (json, type, unit) => {
   $fragmentAbout = document.createDocumentFragment();
-  $fragmentAbout.appendChild(printP(`${type}:`));
-  $fragmentAbout.appendChild(printP(json[`${type}`] + " " + unit));
+  $fragmentAbout.appendChild(printElement(`${type}:`, "p"));
+  $fragmentAbout.appendChild(printElement(json[`${type}`] + " " + unit, "p"));
   return $fragmentAbout;
 };
 
-const removeChild = (contenedor) => {
-  const $item__about = document.querySelectorAll(`${contenedor} p`);
+const removeChild = (contenedor, type) => {
+  const $item__about = document.querySelectorAll(`${contenedor} ${type}`);
   for (let i = 0; i < $item__about.length; i++) {
     $modal.querySelector(`${contenedor}`).removeChild($item__about[i]);
   }
@@ -223,25 +227,142 @@ const createBaseStats = async (json) => {
 
   let total = 0;
   json.forEach((bs, index) => {
-    $baseStats.appendChild(printP(stats[index]));
-    $baseStats.appendChild(printP(bs.base_stat));
-    $baseStats.appendChild(printBar(index, bs.base_stat - 100, $colors[index]));
+    $baseStats.appendChild(printElement(stats[index], "p"));
+    $baseStats.appendChild(printElement(bs.base_stat, "p"));
+    $baseStats.appendChild(
+      printBar(
+        index,
+        bs.base_stat - 100 > 0 ? 0 : bs.base_stat - 100,
+        $colors[index]
+      )
+    );
     total += bs.base_stat;
   });
-  $baseStats.appendChild(printP(stats[6]));
-  $baseStats.appendChild(printP(total));
+  $baseStats.appendChild(printElement(stats[6], "p"));
+  $baseStats.appendChild(printElement(total, "p"));
   $baseStats.appendChild(printBar(6, 0, $colors[6]));
 };
 
-const printP = (value) => {
-  const $pValue = document.createElement("p");
+const printElement = (value, element, attr, valueAttr) => {
+  const $pValue = document.createElement(element);
   $pValue.textContent = value;
+  attr
+    ? attr.forEach((at, index) => {
+        $pValue.setAttribute(at, valueAttr[index]);
+      })
+    : "";
+
   return $pValue;
 };
+
 const printBar = (index, $width, $colors) => {
   const $pBar = document.createElement("p");
   $pBar.classList.add("bar");
   $pBar.style.setProperty("--width-bar", `${$width}%`);
   $pBar.style.setProperty("--bg-color", `var(${$colors})`);
   return $pBar;
+};
+
+const fetchPeticion = async (url) => {
+  let res = await fetch(url),
+    json = await res.json();
+  return json;
+};
+const createEvolutios = async (url, img, name) => {
+  let json = await fetchPeticion(url);
+  json = await fetchPeticion(json.evolution_chain.url);
+  // console.log(json.chain.evolves_to[0].species.name);
+  // console.log(json.chain.evolves_to[0].evolution_details[0].min_level);
+  // console.log(json.chain.evolves_to[0].evolves_to[0].species.name);
+  // console.log(
+  //   json.chain.evolves_to[0].evolves_to[0].evolution_details[0].min_level
+  // );
+  // Pokemon
+  const $evoContainer = $modal.querySelector("#evolutions");
+  $evoContainer.appendChild(
+    createAppendChild(
+      "figure",
+      ["img", "figcaption"],
+      ["src"],
+      [[], name],
+      [img]
+    )
+  );
+  // firts Evolutions
+  for (let i = 0; i < 2; i++) {
+    const arr = [
+      json.chain.evolves_to[0].evolution_details[0].min_level,
+      json.chain.evolves_to[0].evolves_to[0].evolution_details[0].min_level,
+    ];
+    img = await fetchPeticion(
+      `https://pokeapi.co/api/v2/pokemon/${json.chain.evolves_to[0].species.name}`
+    );
+    img = img.sprites.other.dream_world.front_default;
+    name = json.chain.evolves_to[0].species.name;
+    if (i === 0) {
+      $evoContainer.appendChild(
+        createAppendChild(
+          "figure",
+          ["img", "figcaption"],
+          ["src"],
+          [[], "Lvl " + arr[i]],
+          ["../img/arrow.svg"],
+          ["class"],
+          ["arrow"]
+        )
+      );
+    }
+    $evoContainer.appendChild(
+      createAppendChild(
+        "figure",
+        ["img", "figcaption"],
+        ["src"],
+        [[], name],
+        [img]
+      )
+    );
+
+    if (i === 1) {
+      $evoContainer.appendChild(
+        createAppendChild(
+          "figure",
+          ["img", "figcaption"],
+          ["src"],
+          [[], "Lvl " + arr[i]],
+          ["../img/arrow.svg"],
+          ["class"],
+          ["arrow"]
+        )
+      );
+    }
+  }
+  // second Evolutions
+  img = await fetchPeticion(
+    `https://pokeapi.co/api/v2/pokemon/${json.chain.evolves_to[0].evolves_to[0].species.name}`
+  );
+  img = img.sprites.other.dream_world.front_default;
+  name = json.chain.evolves_to[0].evolves_to[0].species.name;
+
+  $evoContainer.appendChild(
+    createAppendChild(
+      "figure",
+      ["img", "figcaption"],
+      ["src"],
+      [[], name],
+      [img]
+    )
+  );
+};
+
+const createAppendChild = (typeP, typeC, attr, content, src, attrP, srcP) => {
+  console.log(attrP, srcP);
+  const $evoFigure = printElement("", typeP, attrP, srcP);
+  typeC.forEach((tpc, index) => {
+    attr[index]
+      ? $evoFigure.appendChild(
+          printElement(content[index], tpc, [attr[index]], [src[index]])
+        )
+      : $evoFigure.appendChild(printElement(content[index], tpc));
+  });
+  return $evoFigure;
 };
