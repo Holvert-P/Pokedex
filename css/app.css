@@ -252,7 +252,7 @@ figcaption {
   width: 100%;
   display: block;
   position: relative;
-  bottom: -4rem;
+  bottom: 3rem;
 }
 .modal__nav {
   display: flex;
@@ -301,7 +301,9 @@ figcaption {
   text-align: center;
   width: 400%;
   transition: transform 0.5s ease-in-out;
-  padding: 1rem 0;
+}
+.container__left {
+  height: 3rem;
 }
 .modal__close {
   display: inline-block;
@@ -389,13 +391,14 @@ figcaption {
 
 #evolutions figure img {
   object-fit: contain;
-  height: 3rem;
+  height: 4rem;
 }
 #evolutions figure {
   height: 100%;
 }
 #evolutions > .arrow {
-  height: 2rem;
+  height: 1rem;
+  font-size: 0.7rem;
 }
 #evolutions > .arrow > img {
   height: 100%;

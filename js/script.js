@@ -142,7 +142,7 @@ const createData = async ($pokemon) => {
       json = await res.json();
 
     // title
-    $modal.querySelector("figcaption").textContent = json.name;
+    $modal.querySelector("h2").textContent = json.name;
 
     // img
     $modal
@@ -150,7 +150,7 @@ const createData = async ($pokemon) => {
       .setAttribute("src", json.sprites.other.home.front_shiny);
 
     // span
-    createTypes(json.types, $modal);
+    // createTypes(json.types, $modal);
 
     // // class
     $modal
