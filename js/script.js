@@ -140,7 +140,7 @@ const createData = async ($pokemon) => {
     removeChild("#about", "p");
     removeChild("#baseStats", "p");
     removeChild("#evolutions", "figure");
-
+removeChild("#moves", "span");
     let res = await fetch(urlPoke + $pokemon),
       json = await res.json();
 
