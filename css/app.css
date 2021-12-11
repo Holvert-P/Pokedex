@@ -224,6 +224,7 @@ figcaption {
 .modal__title {
   font-size: 2.5rem;
   font-weight: bold;
+  text-transform: capitalize;
 }
 .modal__container {
   margin: auto;
@@ -321,6 +322,9 @@ figcaption {
   border-radius: 1rem 1rem 0 0;
   padding-top: 2rem;
 }
+.container__rigth label {
+  cursor: pointer;
+}
 #about,
 #baseStats,
 #evolutions,
@@ -333,21 +337,20 @@ figcaption {
   gap: 0.4rem;
   padding: 1rem;
   display: grid;
+  font-size: 0.65em;
+  font-weight: bold;
 }
 #about {
-  font-size: 0.85em;
   grid-template-columns: repeat(2, min-content);
   white-space: nowrap;
   justify-content: left;
 }
 #baseStats {
-  font-size: 0.85em;
   grid-template-columns: repeat(3, min-content);
   white-space: nowrap;
   align-items: center;
 }
 .bs__Container {
-  font-size: 0.85em;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
 }
@@ -379,7 +382,6 @@ figcaption {
   margin-left: 2rem;
 }
 #evolutions {
-  font-size: 0.85em;
   grid-template-columns: 1fr min-content 1fr;
   grid-template-rows: repeat(2, min-content);
   align-items: center;
@@ -403,6 +405,20 @@ figcaption {
 #evolutions > .arrow > img {
   height: 100%;
 }
+
+#moves {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  overflow-y: scroll;
+  height: 13rem;
+}
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
 @media (min-width: 768px) {
   .bar,
   .bar::before {

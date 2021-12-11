@@ -178,8 +178,9 @@ const createData = async ($pokemon) => {
       .appendChild(printElement(abilitiesArr.join(", "), "p"));
 
     // create BaseStats
-    createBaseStats(json.stats);
-    createEvolutios(json.species.url);
+    await createBaseStats(json.stats);
+    await createEvolutios(json.species.url);
+    createMoves(json.moves);
   } catch (err) {
     console.log(err);
   } finally {
@@ -288,29 +289,98 @@ const createEvolutios = async (url) => {
     )
   );
   // firts Evolutions
+  const arr = [json.chain.evolves_to[0].evolution_details[0].min_level];
+  try {
+    arr.push(
+      json.chain.evolves_to[0].evolves_to[0].evolution_details[0].min_level
+    );
+  } catch (err) {
+    arr.push(undefined);
+  }
   for (let i = 0; i < 2; i++) {
-    const arr = [
-      json.chain.evolves_to[0].evolution_details[0].min_level,
-      json.chain.evolves_to[0].evolves_to[0].evolution_details[0].min_level,
-    ];
     img = await fetchPeticion(
       `https://pokeapi.co/api/v2/pokemon/${json.chain.evolves_to[0].species.name}`
     );
     img = img.sprites.other.home.front_shiny;
     name = json.chain.evolves_to[0].species.name;
+
     if (i === 0) {
-      $evoContainer.appendChild(
-        createAppendChild(
-          "figure",
-          ["img", "figcaption"],
-          ["src"],
-          [[], "Lvl " + arr[i]],
-          ["../img/arrow.svg"],
-          ["class"],
-          ["arrow"]
-        )
-      );
+      if (arr[i] !== null) {
+        $evoContainer.appendChild(
+          createAppendChild(
+            "figure",
+            ["img", "figcaption"],
+            ["src"],
+            [[], "Lvl " + arr[i]],
+            ["../img/arrow.svg"],
+            ["class"],
+            ["arrow"]
+          )
+        );
+        $evoContainer.appendChild(
+          createAppendChild(
+            "figure",
+            ["img", "figcaption"],
+            ["src"],
+            [[], name],
+            [img]
+          )
+        );
+      } else {
+        $evoContainer.appendChild(
+          createAppendChild(
+            "figure",
+            ["img", "figcaption"],
+            ["src"],
+            [[], "No lvl required"],
+            ["../img/arrow.svg"],
+            ["class"],
+            ["arrow"]
+          )
+        );
+        $evoContainer.appendChild(
+          createAppendChild(
+            "figure",
+            ["img", "figcaption"],
+            ["src"],
+            [[], name],
+            [img]
+          )
+        );
+      }
+    } else {
+      if (arr[i] === null || arr[i] !== undefined) {
+        $evoContainer.appendChild(
+          createAppendChild(
+            "figure",
+            ["img", "figcaption"],
+            ["src"],
+            [[], name],
+            [img]
+          )
+        );
+        $evoContainer.appendChild(
+          createAppendChild(
+            "figure",
+            ["img", "figcaption"],
+            ["src"],
+            [[], "No lvl required"],
+            ["../img/arrow.svg"],
+            ["class"],
+            ["arrow"]
+          )
+        );
+      }
     }
+  }
+  // second Evolutions
+  if (arr[1] !== undefined) {
+    img = await fetchPeticion(
+      `https://pokeapi.co/api/v2/pokemon/${json.chain.evolves_to[0].evolves_to[0].species.name}`
+    );
+    img = img.sprites.other.home.front_shiny;
+    name = json.chain.evolves_to[0].evolves_to[0].species.name;
+
     $evoContainer.appendChild(
       createAppendChild(
         "figure",
@@ -320,37 +390,7 @@ const createEvolutios = async (url) => {
         [img]
       )
     );
-
-    if (i === 1) {
-      $evoContainer.appendChild(
-        createAppendChild(
-          "figure",
-          ["img", "figcaption"],
-          ["src"],
-          [[], "Lvl " + arr[i]],
-          ["../img/arrow.svg"],
-          ["class"],
-          ["arrow"]
-        )
-      );
-    }
   }
-  // second Evolutions
-  img = await fetchPeticion(
-    `https://pokeapi.co/api/v2/pokemon/${json.chain.evolves_to[0].evolves_to[0].species.name}`
-  );
-  img = img.sprites.other.home.front_shiny;
-  name = json.chain.evolves_to[0].evolves_to[0].species.name;
-
-  $evoContainer.appendChild(
-    createAppendChild(
-      "figure",
-      ["img", "figcaption"],
-      ["src"],
-      [[], name],
-      [img]
-    )
-  );
 };
 
 const createAppendChild = (typeP, typeC, attr, content, src, attrP, srcP) => {
@@ -364,4 +404,12 @@ const createAppendChild = (typeP, typeC, attr, content, src, attrP, srcP) => {
       : $evoFigure.appendChild(printElement(content[index], tpc));
   });
   return $evoFigure;
+};
+
+const createMoves = (moves) => {
+  console.log($modal.querySelector("#moves"));
+  const $mov = $modal.querySelector("#moves");
+  moves.forEach((mv, index) => {
+    $mov.appendChild(printElement(`${index + 1}: ${mv.move.name} `, "span"));
+  });
 };
