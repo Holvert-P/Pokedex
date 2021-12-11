@@ -307,7 +307,6 @@ figcaption {
   display: inline-block;
   border: 1px solid;
   padding: 0 2em;
-  margin-top: 1em;
   color: #333;
   border-radius: 0.4em;
   cursor: pointer;
@@ -390,7 +389,7 @@ figcaption {
 
 #evolutions figure img {
   object-fit: contain;
-  height: 9rem;
+  height: 3rem;
 }
 #evolutions figure {
   height: 100%;

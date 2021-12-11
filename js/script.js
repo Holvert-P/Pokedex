@@ -3,16 +3,17 @@ const $main = document.querySelector("main"),
 // $template = document.getElementById("template__cards").content;
 let urlPoke = "https://pokeapi.co/api/v2/pokemon/";
 const pokeData = [];
+
 const loadPokemos = async (url) => {
   createLoader();
-  // document.querySelector(".loading").style.display = "flex";
-  // document.querySelector(".loading").style.opacity = 1;
+  document.querySelector(".loading").style.display = "flex";
+  document.querySelector(".loading").style.opacity = 1;
   try {
+    createNav();
     const $div = printElement("", "div", ["class"], ["container__cards"]);
     let res = await fetch(url),
       json = await res.json(),
       $template = "";
-    createNav();
     if (!res.ok) throw { status: res.status, statusText: res.statusText };
     for (let i = 0; i < json.results.length; i++) {
       try {
@@ -26,6 +27,10 @@ const loadPokemos = async (url) => {
 
         $fragment.appendChild($clone);
         $div.appendChild($fragment);
+
+        document.querySelector(".loading").style.opacity = 0;
+        document.querySelector(".loading").style.display = "none";
+
         $main.appendChild($div);
       } catch (err) {
         console.log(err);
@@ -60,15 +65,13 @@ const loadPokemos = async (url) => {
     const p = printElement(message, "p");
     $main.appendChild(p);
   } finally {
-    document.querySelector(".loading").style.opacity = 0;
-    document.querySelector(".loading").style.display = "none";
   }
 };
 const createFigure = (pokemon, $template) => {
   $template.querySelector("figcaption").textContent = pokemon.name;
   $template
     .querySelector("img")
-    .setAttribute("src", pokemon.sprites.other.dream_world.front_default);
+    .setAttribute("src", pokemon.sprites.other.home.front_shiny);
   $template.querySelector("img").setAttribute("alt", pokemon.name);
   $template.querySelector("figure").setAttribute("id", pokemon.id);
   $template
@@ -144,7 +147,7 @@ const createData = async ($pokemon) => {
     // img
     $modal
       .querySelector("img")
-      .setAttribute("src", json.sprites.other.dream_world.front_default);
+      .setAttribute("src", json.sprites.other.home.front_shiny);
 
     // span
     createTypes(json.types, $modal);
@@ -176,11 +179,7 @@ const createData = async ($pokemon) => {
 
     // create BaseStats
     createBaseStats(json.stats);
-    createEvolutios(
-      json.species.url,
-      json.sprites.other.dream_world.front_default,
-      json.name
-    );
+    createEvolutios(json.species.url);
   } catch (err) {
     console.log(err);
   } finally {
@@ -268,16 +267,16 @@ const fetchPeticion = async (url) => {
     json = await res.json();
   return json;
 };
-const createEvolutios = async (url, img, name) => {
+const createEvolutios = async (url) => {
   let json = await fetchPeticion(url);
   json = await fetchPeticion(json.evolution_chain.url);
-  // console.log(json.chain.evolves_to[0].species.name);
-  // console.log(json.chain.evolves_to[0].evolution_details[0].min_level);
-  // console.log(json.chain.evolves_to[0].evolves_to[0].species.name);
-  // console.log(
-  //   json.chain.evolves_to[0].evolves_to[0].evolution_details[0].min_level
-  // );
-  // Pokemon
+
+  let img, name;
+  img = await fetchPeticion(
+    `https://pokeapi.co/api/v2/pokemon/${json.chain.species.name}`
+  );
+  img = img.sprites.other.home.front_shiny;
+  name = json.chain.species.name;
   const $evoContainer = $modal.querySelector("#evolutions");
   $evoContainer.appendChild(
     createAppendChild(
@@ -297,7 +296,7 @@ const createEvolutios = async (url, img, name) => {
     img = await fetchPeticion(
       `https://pokeapi.co/api/v2/pokemon/${json.chain.evolves_to[0].species.name}`
     );
-    img = img.sprites.other.dream_world.front_default;
+    img = img.sprites.other.home.front_shiny;
     name = json.chain.evolves_to[0].species.name;
     if (i === 0) {
       $evoContainer.appendChild(
@@ -340,7 +339,7 @@ const createEvolutios = async (url, img, name) => {
   img = await fetchPeticion(
     `https://pokeapi.co/api/v2/pokemon/${json.chain.evolves_to[0].evolves_to[0].species.name}`
   );
-  img = img.sprites.other.dream_world.front_default;
+  img = img.sprites.other.home.front_shiny;
   name = json.chain.evolves_to[0].evolves_to[0].species.name;
 
   $evoContainer.appendChild(
@@ -355,7 +354,7 @@ const createEvolutios = async (url, img, name) => {
 };
 
 const createAppendChild = (typeP, typeC, attr, content, src, attrP, srcP) => {
-  console.log(attrP, srcP);
+  // console.log(attrP, srcP);
   const $evoFigure = printElement("", typeP, attrP, srcP);
   typeC.forEach((tpc, index) => {
     attr[index]
