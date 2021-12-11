@@ -1,15 +1,11 @@
 const $main = document.querySelector("main"),
   $fragment = document.createDocumentFragment();
-// $template = document.getElementById("template__cards").content;
+
 let urlPoke = "https://pokeapi.co/api/v2/pokemon/";
 const pokeData = [];
-
+let $previous, $next, $component;
 const loadPokemos = async (url) => {
-  createLoader();
-  document.querySelector(".loading").style.display = "flex";
-  document.querySelector(".loading").style.opacity = 1;
   try {
-    createNav();
     const $div = printElement("", "div", ["class"], ["container__cards"]);
     let res = await fetch(url),
       json = await res.json(),
@@ -27,44 +23,23 @@ const loadPokemos = async (url) => {
 
         $fragment.appendChild($clone);
         $div.appendChild($fragment);
-
-        document.querySelector(".loading").style.opacity = 0;
-        document.querySelector(".loading").style.display = "none";
-
-        $main.appendChild($div);
       } catch (err) {
         console.log(err);
         let message = err.statusText || "Ocurrio un error";
       }
     }
 
-    createNav();
     handledBtnMore();
-    const $links = document.querySelectorAll(".links");
 
-    $links.forEach((link) => {
-      const $link1 = printElement("", "a");
-      json.previous
-        ? ($link1.setAttribute("href", json.previous),
-          ($link1.textContent = "< Anterior"))
-        : "";
-      link.appendChild($link1);
-    });
+    $previous = json.previous;
+    $next = json.next;
 
-    $links.forEach((link) => {
-      const $link2 = printElement("", "a");
-      $next = json.next
-        ? ($link2.setAttribute("href", json.next),
-          ($link2.textContent = "Siguitente >"))
-        : "";
-      link.appendChild($link2);
-    });
+    return $div;
   } catch (err) {
     console.log(err);
     let message = err.statusText || "Ocurrio un error";
     const p = printElement(message, "p");
     $main.appendChild(p);
-  } finally {
   }
 };
 const createFigure = (pokemon, $template) => {
@@ -84,21 +59,43 @@ const createTypes = (types, $template) => {
     $template.querySelector(`.type${index}`).textContent = el.type.name;
   });
 };
-document.addEventListener("DOMContentLoaded", (e) => {
-  loadPokemos(urlPoke);
+document.addEventListener("DOMContentLoaded", async (e) => {
+  createLoader();
+  document.querySelector(".loading").style.display = "flex";
+  document.querySelector(".loading").style.opacity = 1;
+
+  const $c = await loadPokemos(urlPoke);
+  createMain($c);
+
+  document.querySelector(".loading").style.opacity = 0;
+  document.querySelector(".loading").style.display = "none";
 });
 
-document.addEventListener("click", (e) => {
+const createMain = async (component) => {
+  $main.appendChild(createNav());
+  $main.appendChild(component);
+  $main.appendChild(createNav());
+
+  $component = await loadPokemos($next);
+};
+document.addEventListener("click", async (e) => {
   if (e.target.matches(".links a")) {
     e.preventDefault();
     $main.innerHTML = "";
-    loadPokemos(e.target.getAttribute("href"));
+    $component = await loadPokemos(e.target.getAttribute("href"));
+    createMain($component);
   }
 });
 
 const createNav = () => {
   const $nav = printElement("", "nav", ["class"], ["links"]);
-  $main.appendChild($nav);
+  if ($previous === null) {
+    $nav.appendChild(printElement("Next >", "a", ["href"], [$next]));
+  } else {
+    $nav.appendChild(printElement("< Previous", "a", ["href"], [$previous]));
+    $nav.appendChild(printElement("Next >", "a", ["href"], [$next]));
+  }
+  return $nav;
 };
 
 const createLoader = () => {
@@ -124,13 +121,19 @@ const handledBtnMore = () => {
   const $btn__more = document.querySelectorAll(".btn__more");
   $btn__more.forEach((btn) => {
     btn.addEventListener("click", () => {
+      $main.querySelector(".loading")
+        ? $main.removeChild($main.querySelector(".loading"))
+        : "";
+
       createData(btn.parentNode.id);
+
       $modal.querySelector("#inputs-1").setAttribute("checked", "checked");
     });
   });
 };
 
 const createData = async ($pokemon) => {
+  createLoader();
   document.querySelector(".loading").style.display = "flex";
   document.querySelector(".loading").style.opacity = 1;
   try {
@@ -407,7 +410,6 @@ const createAppendChild = (typeP, typeC, attr, content, src, attrP, srcP) => {
 };
 
 const createMoves = (moves) => {
-  console.log($modal.querySelector("#moves"));
   const $mov = $modal.querySelector("#moves");
   moves.forEach((mv, index) => {
     $mov.appendChild(printElement(`${index + 1}: ${mv.move.name} `, "span"));
