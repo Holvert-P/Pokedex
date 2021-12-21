@@ -111,7 +111,8 @@ a,
   color: inherit;
   padding: 0 1rem;
   border-radius: 1rem;
-  margin: 0 0.25rem;
+  margin: 0.25rem;
+  margin-top: 3rem;
 }
 img {
   object-fit: cover;
@@ -177,8 +178,6 @@ img {
   padding: 1rem;
   gap: 1rem;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr auto;
-  max-height: 12rem;
   background-size: 50%;
   background-repeat: no-repeat;
   background-position: right;
@@ -204,13 +203,9 @@ figcaption {
   height: auto;
 }
 .btn__more {
-  /* width: 6rem; */
-  /* margin-top: 1rem; */
   background-color: #ba9fcc85;
   cursor: pointer;
   grid-column: span 2;
-  align-self: center;
-  margin: 0 4rem;
 }
 
 /* -----Modal------- */
@@ -247,6 +242,7 @@ figcaption {
   font-size: 2.5rem;
   font-weight: bold;
   text-transform: capitalize;
+  margin-bottom: 2rem;
 }
 .modal__container {
   margin: auto;
@@ -256,6 +252,9 @@ figcaption {
   text-align: center;
   padding-top: 0.25rem;
   border-radius: 1em;
+  background-size: 40%;
+  background-repeat: no-repeat;
+  background-position: 10rem 4rem;
 }
 .modal__picture {
   width: 50%;

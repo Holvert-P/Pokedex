@@ -1,7 +1,6 @@
 const $main = document.querySelector("main"),
   $fragment = document.createDocumentFragment(),
   $modal = document.getElementById("modal");
-// $btn__close = document.querySelector(".modal__close");
 let urlPoke = "https://pokeapi.co/api/v2/pokemon/";
 const pokeData = [];
 let $previous, $next, $component;
@@ -138,7 +137,7 @@ const createData = async ($pokemon) => {
     removeChild("#about", "p");
     removeChild("#baseStats", "p");
     removeChild("#evolutions", "figure");
-removeChild("#moves", "span");
+    removeChild("#moves", "span");
     let res = await fetch(urlPoke + $pokemon),
       json = await res.json();
 
