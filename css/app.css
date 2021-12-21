@@ -18,64 +18,82 @@
   --poison-color: #b058a0;
   --flying-color: #98a8f0;
 }
-.dark {
-  background-color: var(--dark-color);
-}
-.steel {
-  background-color: var(--steel-color);
-}
-.water {
-  background-color: var(--water-color);
-}
-.bug {
-  background-color: var(--bug-color);
-}
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+.dark {
+  background-color: var(--dark-color);
+  background-image: url(../img/dark.svg);
+}
+.steel {
+  background-color: var(--steel-color);
+  background-image: url(../img/steel.svg);
+}
+.water {
+  background-color: var(--water-color);
+  background-image: url(../img/water.svg);
+}
+.bug {
+  background-color: var(--bug-color);
+  background-image: url(../img/bug.svg);
+}
 .dragon {
   background-color: var(--dragon-color);
+  background-image: url(../img/dragon.svg);
 }
 .electric {
   background-color: var(--electric-color);
+  background-image: url(../img/electric.svg);
 }
 .fairy {
   background-color: var(--fairy-color);
+  background-image: url(../img/fairy.svg);
 }
 .fighting {
   background-color: var(--fighting-color);
+  background-image: url(../img/fighting.svg);
 }
 .fire {
   background-color: var(--fire-color);
+  background-image: url(../img/fire.svg);
 }
 .flying {
   background-color: var(--flying-color);
+  background-image: url(../img/flying.svg);
 }
 .ghost {
   background-color: var(--ghost-color);
+  background-image: url(../img/ghost.svg);
 }
 .grass {
   background-color: var(--grass-color);
+  background-image: url(../img/grass.svg);
 }
 .ground {
   background-color: var(--ground-color);
+  background-image: url(../img/ground.svg);
 }
 .ice {
   background-color: var(--ice-color);
+  background-image: url(../img/ice.svg);
 }
 .normal {
   background-color: var(--normal-color);
+  background-image: url(../img/normal.svg);
 }
 .poison {
   background-color: var(--poison-color);
+  background-image: url(../img/poison.svg);
 }
 .psychic {
   background-color: var(--psychic-color);
+  background-image: url(../img/psychic.svg);
 }
 .rock {
   background-color: var(--rock-color);
+  background-image: url(../img/rock.svg);
 }
 html {
   font-size: 16px;
@@ -112,18 +130,17 @@ img {
   width: 100vw;
   height: 3.1rem;
 }
-.cards .loader {
-  width: 3rem;
+.loader {
+  width: 1.5rem;
   object-fit: contain;
 }
 
-.cards .loading {
+.loading {
   display: flex;
   background-color: var(--fairy-color);
   justify-content: center;
   gap: 1rem;
   padding: 0.5rem;
-  opacity: 0;
   margin: auto;
   align-items: center;
   position: fixed;
@@ -162,6 +179,9 @@ img {
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr auto;
   max-height: 12rem;
+  background-size: 50%;
+  background-repeat: no-repeat;
+  background-position: right;
 }
 
 figcaption {

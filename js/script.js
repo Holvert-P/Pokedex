@@ -1,6 +1,7 @@
 const $main = document.querySelector("main"),
-  $fragment = document.createDocumentFragment();
-
+  $fragment = document.createDocumentFragment(),
+  $modal = document.getElementById("modal");
+// $btn__close = document.querySelector(".modal__close");
 let urlPoke = "https://pokeapi.co/api/v2/pokemon/";
 const pokeData = [];
 let $previous, $next, $component;
@@ -29,7 +30,7 @@ const loadPokemos = async (url) => {
       }
     }
 
-    handledBtnMore();
+    // handledBtnMore();
 
     $previous = json.previous;
     $next = json.next;
@@ -61,14 +62,9 @@ const createTypes = (types, $template) => {
 };
 document.addEventListener("DOMContentLoaded", async (e) => {
   createLoader();
-  document.querySelector(".loading").style.display = "flex";
-  document.querySelector(".loading").style.opacity = 1;
-
   const $c = await loadPokemos(urlPoke);
   createMain($c);
-
-  document.querySelector(".loading").style.opacity = 0;
-  document.querySelector(".loading").style.display = "none";
+  handledLoader.close();
 });
 
 const createMain = async (component) => {
@@ -79,11 +75,25 @@ const createMain = async (component) => {
   $component = await loadPokemos($next);
 };
 document.addEventListener("click", async (e) => {
+  if (e.target.matches("#cards .btn__more")) {
+    let $id = e.target.parentNode.id;
+    $modal.querySelector("#inputs-1").checked = true;
+    $main.querySelector(".loading")
+      ? $main.removeChild($main.querySelector(".loading"))
+      : "";
+
+    createData($id);
+  }
+  if (e.target.matches("#modal .modal__close")) {
+    $modal.classList.remove("modal__show");
+  }
   if (e.target.matches(".links a")) {
     e.preventDefault();
     $main.innerHTML = "";
+    handledLoader.show();
     $component = await loadPokemos(e.target.getAttribute("href"));
     createMain($component);
+    handledLoader.close();
   }
 });
 
@@ -107,35 +117,23 @@ const createLoader = () => {
     ),
     $divLoader = printElement("", "div", ["class"], ["loading"]);
   $divLoader.appendChild($loader);
-  $divLoader.appendChild(printElement("Cargando...", "span"));
-  $main.appendChild($divLoader);
+  $divLoader.appendChild(printElement("Loading...", "span"));
+  console.log(document.body);
+  document.body.appendChild($divLoader);
 };
 
-const $modal = document.getElementById("modal"),
-  $btn__close = document.querySelector(".modal__close");
-$btn__close.addEventListener("click", () => {
-  $modal.classList.remove("modal__show");
-});
-
-const handledBtnMore = () => {
-  const $btn__more = document.querySelectorAll(".btn__more");
-  $btn__more.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      $main.querySelector(".loading")
-        ? $main.removeChild($main.querySelector(".loading"))
-        : "";
-
-      createData(btn.parentNode.id);
-
-      $modal.querySelector("#inputs-1").setAttribute("checked", "checked");
-    });
-  });
+const handledLoader = {
+  show: () => {
+    document.querySelector(".loading").style.display = "flex";
+    document.querySelector(".loading").style.opacity = 1;
+  },
+  close: () => {
+    document.querySelector(".loading").style.display = "none";
+    document.querySelector(".loading").style.opacity = 0;
+  },
 };
-
 const createData = async ($pokemon) => {
-  createLoader();
-  document.querySelector(".loading").style.display = "flex";
-  document.querySelector(".loading").style.opacity = 1;
+  handledLoader.show();
   try {
     removeChild("#about", "p");
     removeChild("#baseStats", "p");
@@ -187,8 +185,7 @@ const createData = async ($pokemon) => {
   } catch (err) {
     console.log(err);
   } finally {
-    document.querySelector(".loading").style.display = "none";
-    document.querySelector(".loading").style.opacity = 0;
+    handledLoader.close();
     $modal.classList.add("modal__show");
   }
 };
