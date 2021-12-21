@@ -180,7 +180,7 @@ img {
   grid-template-columns: 1fr 1fr;
   background-size: 45%;
   background-repeat: no-repeat;
-  background-position: 7rem 0.5rem;
+  background-position: 7rem 0;
 }
 
 figcaption {
